@@ -41,5 +41,5 @@ example/output
 browserify-cache.json
 
 # build directories
-test
-dist
+# test
+# dist

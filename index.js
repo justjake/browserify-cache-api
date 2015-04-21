@@ -1,1 +1,2 @@
-module.exports = require('./lib/BrowserifyCache');
+require('source-map-support').install();
+module.exports = require('./dist/BrowserifyCache');

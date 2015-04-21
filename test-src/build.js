@@ -4,6 +4,7 @@ var path = require('path')
 var through = require('through2')
 var fs = require('fs')
 var xtend = require('xtend')
+var mkdirp = require('mkdirp')
 
 var basedir = path.resolve(__dirname, '../')
 var outputdir = path.join(basedir, 'example','output','test','build')
@@ -13,29 +14,23 @@ var dependentFile = path.join(outputdir, 'dependent.txt')
 
 test("make sure it builds and builds again", function (t) {
   // t.plan(5)
-  exec('mkdir -p '+outputdir, function (err) {
-    t.notOk(err, 'dir created')
-    fs.writeFileSync(requiresDynamicModule, 'require("./dynamic")')
-    build1()
-  })
+  mkdirp.sync(outputdir);
+  fs.writeFileSync(requiresDynamicModule, 'require("./dynamic")')
+  fs.writeFileSync(dynamicModule, 'console.log("a")')
 
-  function build1 () {
-    fs.writeFileSync(dynamicModule, 'console.log("a")')
+  var b1 = make()
 
-    var b1 = make()
-
-    b1.bundle()
-      .pipe(through())
-      .on('finish', function () {
-        t.ok(true, 'built once')
-      })
-      .pipe(fs.createWriteStream(path.join(outputdir,'build1.js')))
-      .on('finish', function () {
-        setTimeout(function () {
-          build2()
-        }, 2000) // mtime resolution can be 1-2s depending on OS
-      })
-  }
+  b1.bundle()
+    .pipe(through())
+    .on('finish', function () {
+      t.ok(true, 'built once')
+    })
+    .pipe(fs.createWriteStream(path.join(outputdir,'build1.js')))
+    .on('finish', function () {
+      setTimeout(function () {
+        build2()
+      }, 2000) // mtime resolution can be 1-2s depending on OS
+    })
 
   function build2 () {
     fs.writeFileSync(dynamicModule, 'console.log("b")')
