@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rm -rf ./dist ./test && babel --source-maps inline ./lib --out-dir ./dist && babel --source-maps inline ./test-src --out-dir ./test",
-    "test": "npm run build && tap test"
+    "test": "npm run build && tap test",
     "prepublish": "npm run build"
   },
   "author": "James Friend <james@jsdf.co> (http://jsdf.co/)",
