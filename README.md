@@ -21,3 +21,4 @@ justjake/browserify-cache-api is used by no one, for any purpose.
 - [ ] relativize paths in `cache.json` files to the Browserify `opts.basedir`.
 - [ ] add pluggable cache backed systems which handle load and store of `Cache` instances.
   - would it be better to just provide the whole cache in the callback, and let the user handle that? In that case, also need to provide option hook for loading.
+- [x] write new files in ES6
